@@ -3,16 +3,18 @@
     <meta charset="UTF-8">
     <title>Calculadora</title>
 <style>
+    *{
+        box-sizing: border-box;
+    }
     body{
-        background-color: rgb(39, 36, 36);
+        background-color: rgb(37, 37, 41);
     }
     .container{
         display: flex;
         height:100vh;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
-       
+        align-items: center;       
         }
         .containerNum div{
             display: flex;
@@ -25,6 +27,8 @@
             background-color:grey;
             height: 50px;
             width: 50px;
+            border: none;
+            border-radius: 20%;
         }
         .containerNum button:hover{
             background-color: rgb(74, 73, 73);
@@ -53,14 +57,17 @@
             margin-bottom: 10px;
             font-size: 32px;
             padding: 10px 15px;
+            border-radius: 8%;
+            overflow:auto;
+            white-space: nowrap;
         }
         
 </style>
 </head>
 <body>
     
-    <div class="container">
-        <div class="visor">sssssss</div>
+<div class="container">
+    <div class="visor">0</div>
     
     <div class="containerNum">
     <div class="or">
@@ -68,35 +75,80 @@
     <button>&lt;</button>
     <button>%</button>
     <button>+</button>
-    </div>
-<div>
-    <button>1</button>
-    <button>2</button>
-    <button>3</button>
-    <button class="or">-</button>
-</div>
-<div>
+        </div>
+        <div>
+    <button id="um">1</button>
+    <button id="dois">2</button>
+    <button id="tres">3</button>
+    <button id="menos" class="or">-</button>
+        </div>
+        <div>
     <button>4</button>
     <button>5</button>
     <button>6</button>
     <button class="or">&times;</button>
-</div>
-<div>
+        </div>
+        <div>
     <button>7</button>
     <button>8</button>
     <button>9</button>
     <button class="or">&divide;</button>
-</div>
-<div>
+        </div>
+        <div>
 
 <button>&diamondsuit;</button>
 <button>0</button>
 <button>.</button>
 <button class="or">=</button>
-</div>
         </div>
     </div>
+</div>
 
+<script>
+    const visor = document.querySelector('.visor');
+    const buttons = document.querySelectorAll('.containerNum button')
+
+    buttons.forEach(button =>{
+        button.addEventListener('click', ()=>{
+            const textButton = button.innerText;
+
+            if(textButton==='AC'){
+                visor.innerText = '0'
+                return;
+            }
+            if(textButton==='<'){
+                if(visor.innerText.length > 1){
+                   visor.innerText = visor.innerText.slice(0, -1);
+                }
+                else{
+                    visor.innerText = '0'
+                }
+                return;
+            }
+
+            if(textButton==='='){
+                try{
+                    let expression = visor.innerText;
+                    expression = expression.replace(/&times;/g, '*').replace(/×/g, '*');
+                    expression = expression.replace(/&divide;/g, '/').replace(/÷/g, '/');
+               visor.innerText = eval(expression);
+                } catch(error){
+                    visor.innerText = 'Erro';
+                }
+                return;
+            }
+
+            if(visor.innerText==='0' ||visor.innerText==='Erro'){
+                visor.innerText = textButton;
+            }
+            else{
+                visor.innerText += textButton;
+            }
+
+        });
+    });
+
+</script>
     
     </body>
 </body>
