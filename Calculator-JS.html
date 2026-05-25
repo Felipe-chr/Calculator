@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora</title>
+<style>
+    *{
+        box-sizing: border-box;
+    }
+    body{
+        background-color: rgb(37, 37, 41);
+    }
+    .container{
+        display: flex;
+        height:100vh;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;       
+    }
+    .containerNum div{
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        margin-bottom: 5px;
+    }
+    .containerNum button{
+        color: white;
+        background-color: rgb(112, 112, 112);
+        height: 50px;
+        width: 50px;
+        border: 2px solid transparent;
+        border-radius: 20%;
+        cursor: pointer;
+        transition: box-shadow 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+    }
+    .containerNum button:hover{
+        color: #00f0ff;
+        border: 2px solid #00f0ff;
+        box-shadow: 0 0 1px #00f0ff, 0 0 2px #00f0ff, inset 0 0 2px #00f0ff;
+        animation: neonButton 1s forwards;
+
+    }
+    .visor{
+        color: white;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        background-color: black;
+        height: auto;
+        min-height: 100px;
+        width: auto;
+        min-width: 215px;
+        margin-bottom: 10px;
+        font-size: 32px;
+        padding: 10px 15px;
+        border-radius: 8%;
+       /* overflow: auto;*/
+        white-space: nowrap;
+        border: 2px solid #00f0ff;
+        box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff, inset 0 0 10px #00f0ff;
+        animation: neonPulso 10s infinite alternate;
+    }
+
+    @keyframes neonPulso {
+        0% {
+            box-shadow: 0 0 5px #00f0ff, 0 0 15px #00f0ff, inset 0 0 5px #00f0ff;
+            filter: brightness(0.9);
+        }
+        100% {
+            box-shadow: 0 0 15px #00f0ff, 0 0 300px #00f0ff, inset 0 0 15px #00f0ff;
+            filter: brightness(1.2);
+        }
+    }
+    @keyframes neonButton {
+        0% {
+            box-shadow: 0 0 1px #00f0ff, 0 0 2px #00f0ff, inset 0 0 2px #00f0ff;
+            filter: brightness(0.9);
+        }
+        100% {
+            box-shadow: 0 0 3px #00f0ff, 0 0 6px #00f0ff, inset 0 0 5px #00f0ff;
+            filter: brightness(1.2);
+        }
+    }
+    .visor.visorErro{
+        border-color: #d81414;
+        animation: neonErro 10s infinite alternate;
+    }
+    .container:has(.visorErro) .containerNum button:hover {
+    color: #d81414;
+    border-color: #d81414;
+    animation: neonButtonErro 1s forwards; 
+}
+    .container:has(.visorErro) .specialButtons button:hover {
+    color: #d81414;
+    border-color: #d81414;
+    animation: neonButtonErro 1s forwards; 
+}
+@keyframes neonButtonErro {
+        0% {
+            box-shadow: 0 0 1px #d81414, 0 0 2px #d81414, inset 0 0 2px #d81414;
+            filter: brightness(0.9);
+        }
+        100% {
+            box-shadow: 0 0 3px #d81414, 0 0 6px #d81414, inset 0 0 5px #d81414;
+            filter: brightness(1.2);
+        }
+    }
+    @keyframes neonErro {
+        0%{
+            box-shadow: 0 0 5px  #d81414, 0 0 15px #d81414, inset 0 0 5px #d81414;
+            filter: brightness(0.9);
+        }
+        100%{
+            box-shadow: 0 0 5px  #d81414, 0 0 300px #d81414, inset 0 0 15px #d81414;
+            filter: brightness(1.2);
+        }
+    }
+    .specialButtons button{
+        display: none;
+        color: white;
+        background-color: rgb(112, 112, 112);
+        height: 50px;
+        width: 50px;
+        border: 2px solid transparent;
+        border-radius: 20%;
+        cursor: pointer;
+        transition: box-shadow 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+    }
+    .specialButtons button:hover{
+        color: #00f0ff;
+        border: 2px solid #00f0ff;
+        box-shadow: 0 0 1px #00f0ff, 0 0 2px #00f0ff, inset 0 0 2px #00f0ff;
+        animation: neonButton 1s forwards;
+    }
+    .specialButtons.visivel{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px;
+    }
+    .specialButtons.visivel .rowB{
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        margin-top: 5px;
+    }
+    .specialButtons.visivel button{
+        display: block;
+    }
+    .blueLine{
+        display: flex;
+        background-color: #00f0ff;
+        height: 1px;
+        width: 215px;
+        margin: 10px;
+        border-radius: 50%;
+        border: 2px solid #00f0ff;
+        box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff, inset 0 0 10px #00f0ff;
+    }
+    .container:has(.visorErro) .blueLine{
+        display: flex;
+        background-color: #00f0ff;
+        height: 1px;
+        width: 215px;
+        margin: 10px;
+        border-radius: 50%;
+        border: 2px solid #d81414;
+        box-shadow: 0 0 10px #d81414, 0 0 20px #d81414, inset 0 0 10px #d81414;
+    }
+    .light1{
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background-color:  rgba(255, 175, 26, 0.8);
+        filter: blur(4px);
+        animation: lightPs 5s infinite alternate;
+    }
+    @keyframes lightPs {
+        0% {
+            box-shadow: 
+            0 0 15px rgb(255, 175, 26),
+            0 0 30px rgb(255, 175, 26);
+        filter: blur(4px) brightness(0.9);
+    }
+    100% {box-shadow: 
+            0 0 40px rgb(255, 175, 26),
+            0 0 120px rgb(255, 175, 26),
+            0 0 300px 30px rgb(255, 175, 26), 
+            0 0 500px 70px rgb(255, 175, 26); 
+        
+        filter: blur(6px) brightness(1.6);
+        }
+    }
+    .containerNum button.touchBtn, 
+.specialButtons button.touchBtn {
+    color: #00f0ff !important;
+    background-color: rgb(255, 255, 255) !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 5px #00f0ff, 0 0 15px #00f0ff, inset 0 0 5px #00f0ff !important;
+    animation: none !important; 
+}
+</style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="light1"></div>
+
+        <div class="visor">0</div>
+    
+    <div class="containerNum">
+        <div>
+            <button>AC</button>
+            <button>&lt;</button>
+            <button>%</button>
+            <button>+</button>
+        </div>
+        <div>
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>-</button>
+        </div>
+        <div>
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button>&times;</button>
+        </div>
+        <div>
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <button>&divide;</button>
+        </div>
+        <div>
+            <button>&diamondsuit;</button>
+            <button>0</button>
+            <button>.</button>
+            <button>=</button>
+        </div>
+    </div>
+    <div class="specialButtons">
+        <div class="blueLine"></div>
+        <div class="rowB">  
+            <button>&radic;</button>
+            <button>X<sup>y</sup></button>
+            <button>$-R$</button>
+            <button>€</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const visor = document.querySelector('.visor');
+    const buttons = document.querySelectorAll('.containerNum button')
+
+    buttons.forEach(button =>{
+        button.addEventListener('click', ()=>{
+            visor.classList.remove('visorErro');
+            button.classList.add('touchBtn');
+            setTimeout(() => {
+            button.classList.remove('touchBtn');
+        }, 100);
+            const textButton = button.innerText;
+
+            if(textButton==='AC'){
+                visor.innerText = '0'
+                return;
+            }
+            if(textButton==='<'){
+                if(visor.innerText.length > 1){
+                   visor.innerText = visor.innerText.slice(0, -1);
+                }
+                else{
+                    visor.innerText = '0'
+                }
+                return;
+            }
+             if(textButton==='♦'){
+                const ocult = document.querySelector('.specialButtons');
+                ocult.classList.toggle('visivel');
+                return;
+            }
+
+            if(textButton==='='){
+                try{
+                    let expression = visor.innerText;
+                    expression = expression.replace(/&times;/g, '*').replace(/×/g, '*');
+                    expression = expression.replace(/&divide;/g, '/').replace(/÷/g, '/');
+                    visor.innerText = eval(expression);
+                } catch(error){
+                    visor.innerText = 'Erro';
+                    visor.classList.add('visorErro')
+                    return
+                }
+                return;
+            }
+            if(textButton==='.'){
+                const numBlock = visor.innerText.split(/[\+\-×÷]/)
+                const actualNum = numBlock[numBlock.length - 1];
+                if(!actualNum.includes('.')){
+                    visor.innerText+= textButton;
+                }
+                return;
+            }
+            else if(visor.innerText==='0' || visor.innerText==='Erro'){
+                visor.innerText = textButton;
+            }
+            else{
+                visor.innerText += textButton;
+            }
+           
+        });
+    });
+    const specialBtns = document.querySelectorAll('.specialButtons button');
+        specialBtns.forEach(button => {
+        button.addEventListener('click', ()=>{
+           const textButton=button.innerText;
+           button.classList.add('touchBtn');
+            setTimeout(() => {
+            button.classList.remove('touchBtn');
+        }, 100);
+        if(textButton===`√;`){
+            visor.innerText = Math.sqrt(visor.innerText);
+            let numero = parseFloat(visor.innerText);
+
+        }
+
+        });
+     });
+
+</script>
+    
+</body>
+</html>
