@@ -281,27 +281,31 @@
                 }
                 return;
             }
-             if(textButton==='♦'){
+            if(textButton==='♦'){
                 const ocult = document.querySelector('.specialButtons');
                 ocult.classList.toggle('visivel');
                 return;
             }
-
+            if(visor.innerText==='NaN'||visor.innerText==='undefined'){
+                    visor.innerText = "Erro"
+                    visor.classList.add('visorErro')}
             if(textButton==='='){
                 try{
                     let expression = visor.innerText;
                     expression = expression.replace(/&times;/g, '*').replace(/×/g, '*');
                     expression = expression.replace(/&divide;/g, '/').replace(/÷/g, '/');
                     visor.innerText = eval(expression);
+                     
                 } catch(error){
                     visor.innerText = 'Erro';
                     visor.classList.add('visorErro')
-                    return
+                    return;
                 }
+                
                 return;
             }
             if(textButton==='.'){
-                const numBlock = visor.innerText.split(/[\+\-×÷]/)
+                const numBlock = visor.innerText.split(/[\+\-×÷\%]/)
                 const actualNum = numBlock[numBlock.length - 1];
                 if(!actualNum.includes('.')){
                     visor.innerText+= textButton;
@@ -320,17 +324,23 @@
     const specialBtns = document.querySelectorAll('.specialButtons button');
         specialBtns.forEach(button => {
         button.addEventListener('click', ()=>{
-           const textButton=button.innerText;
+           const textButton = button.innerHTML;
            button.classList.add('touchBtn');
             setTimeout(() => {
             button.classList.remove('touchBtn');
         }, 100);
-        if(textButton===`√;`){
-            visor.innerText = Math.sqrt(visor.innerText);
-            let numero = parseFloat(visor.innerText);
 
-        }
+            if(textButton==='√' || textButton===`X<sup>y</sup>`){
+                const numBlock = visor.innerHTML.split(/[\+\-×÷\%]/);
+                const actualNum = numBlock[numBlock.length - 1];
 
+                if(textButton===`√`){
+                    let number = parseFloat(actualNum);
+                    let raiz = Math.sqrt(number);
+                    visor.innerText = visor.innerText.slice(0, -actualNum.length) + raiz;
+                    return;
+                }
+            }
         });
      });
 
