@@ -289,21 +289,35 @@
             if(visor.innerText==='NaN'||visor.innerText==='undefined'){
                     visor.innerText = "Erro"
                     visor.classList.add('visorErro')}
-            if(textButton==='='){
+                       if(textButton==='='){
                 try{
                     let expression = visor.innerText;
-                    expression = expression.replace(/&times;/g, '*').replace(/×/g, '*');
-                    expression = expression.replace(/&divide;/g, '/').replace(/÷/g, '/');
-                    visor.innerText = eval(expression);
+                    
+                    if (expression.includes('^')) {
+                        const partes = expression.split('^'); 
+                        const base = parseFloat(partes[0]);     
+                        const expoente = parseFloat(partes[1]); 
+                        expression = Math.pow(base, expoente);  
+                    }
+                    expression = expression.toString().replace(/&times;/g, '*').replace(/×/g, '*');
+                    expression = expression.toString().replace(/&divide;/g, '/').replace(/÷/g, '/');
+                    
+                    let resultado = eval(expression);
+                    visor.innerText = resultado;
+
+                    if (isNaN(resultado) || visor.innerText === 'NaN' || visor.innerText === 'undefined') {
+                        visor.innerText = "Erro";
+                        visor.classList.add('visorErro');
+                    }
                      
                 } catch(error){
                     visor.innerText = 'Erro';
-                    visor.classList.add('visorErro')
+                    visor.classList.add('visorErro');
                     return;
                 }
-                
                 return;
             }
+
             if(textButton==='.'){
                 const numBlock = visor.innerText.split(/[\+\-×÷\%]/)
                 const actualNum = numBlock[numBlock.length - 1];
@@ -340,6 +354,12 @@
                     visor.innerText = visor.innerText.slice(0, -actualNum.length) + raiz;
                     return;
                 }
+                if(textButton===`X<sup>y</sup>`){
+                    if (visor.innerText !== '0' && visor.innerText !== 'Erro') {
+            visor.innerText += '^';
+        }
+        return;
+    }
             }
         });
      });
