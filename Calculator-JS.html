@@ -168,18 +168,44 @@
         border: 2px solid #d81414;
         box-shadow: 0 0 10px #d81414, 0 0 20px #d81414, inset 0 0 10px #d81414;
     }
-    .light1{
+    .light{
         position: absolute;
-        top: 20px;
-        left: 20px;
         height: 20px;
         width: 20px;
         border-radius: 50%;
+        will-change: filter, box-shadow;
+    }
+    .blueLight{
+        top: 20px;
+        left: 20px;
         background-color:  rgba(255, 175, 26, 0.8);
         filter: blur(4px);
-        animation: lightPs 5s infinite alternate;
+        animation: lightPsBlue 8s 0.5s infinite alternate;
     }
-    @keyframes lightPs {
+    .pinkLight{
+        bottom: 60px;
+        right: 150px;
+        background-color:  rgba(255, 26, 171, 0.8);
+        filter: blur(4px);
+        animation: lightPsPink 8s 0.9s infinite alternate;
+    }
+    @keyframes lightPsPink {
+        0% {
+            box-shadow: 
+            0 0 15px rgba(255, 26, 171, 0.8),
+            0 0 30px  rgba(255, 26, 171, 0.8);
+        filter: blur(4px) brightness(0.9);
+    }
+    100% {box-shadow: 
+            0 0 40px  rgba(255, 26, 171, 0.8),
+            0 0 120px  rgba(255, 26, 171, 0.8),
+            0 0 300px 30px  rgba(255, 26, 171, 0.8), 
+            0 0 500px 70px  rgba(255, 26, 171, 0.8); 
+        
+        filter: blur(6px) brightness(1.6);
+        }
+    }
+    @keyframes lightPsBlue {
         0% {
             box-shadow: 
             0 0 15px rgb(255, 175, 26),
@@ -208,8 +234,9 @@
 <body>
     <div class="container">
 
-        <div class="light1"></div>
-
+        <div class="light blueLight"></div>
+        <div class="light pinkLight"></div>
+        
         <div class="visor">0</div>
     
     <div class="containerNum">
