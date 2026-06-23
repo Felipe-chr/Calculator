@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Calculadora</title>
-<style>
-    *{
+*{
         box-sizing: border-box;
     }
     body{
@@ -90,6 +84,11 @@
     border-color: #d81414;
     animation: neonButtonErro 1s forwards; 
 }
+    .container:has(.visorErro) .specialButtons button:hover {
+    color: #d81414;
+    border-color: #d81414;
+    animation: neonButtonErro 1s forwards; 
+}
 @keyframes neonButtonErro {
         0% {
             box-shadow: 0 0 1px #d81414, 0 0 2px #d81414, inset 0 0 2px #d81414;
@@ -163,18 +162,44 @@
         border: 2px solid #d81414;
         box-shadow: 0 0 10px #d81414, 0 0 20px #d81414, inset 0 0 10px #d81414;
     }
-    .light1{
+    .light{
         position: absolute;
-        top: 20px;
-        left: 20px;
         height: 20px;
         width: 20px;
         border-radius: 50%;
+        will-change: filter, box-shadow;
+    }
+    .blueLight{
+        top: 20px;
+        left: 20px;
         background-color:  rgba(255, 175, 26, 0.8);
         filter: blur(4px);
-        animation: lightPs 5s infinite alternate;
+        animation: lightPsBlue 8s 0.5s infinite alternate;
     }
-    @keyframes lightPs {
+    .pinkLight{
+        bottom: 60px;
+        right: 150px;
+        background-color:  rgba(255, 26, 171, 0.8);
+        filter: blur(4px);
+        animation: lightPsPink 8s 0.9s infinite alternate;
+    }
+    @keyframes lightPsPink {
+        0% {
+            box-shadow: 
+            0 0 15px rgba(255, 26, 171, 0.8),
+            0 0 30px  rgba(255, 26, 171, 0.8);
+        filter: blur(4px) brightness(0.9);
+    }
+    100% {box-shadow: 
+            0 0 40px  rgba(255, 26, 171, 0.8),
+            0 0 120px  rgba(255, 26, 171, 0.8),
+            0 0 300px 30px  rgba(255, 26, 171, 0.8), 
+            0 0 500px 70px  rgba(255, 26, 171, 0.8); 
+        
+        filter: blur(6px) brightness(1.6);
+        }
+    }
+    @keyframes lightPsBlue {
         0% {
             box-shadow: 
             0 0 15px rgb(255, 175, 26),
@@ -190,124 +215,11 @@
         filter: blur(6px) brightness(1.6);
         }
     }
-</style>
-</head>
-<body>
-    <div class="container">
-
-        <div class="light1"></div>
-
-        <div class="visor">0</div>
-    
-    <div class="containerNum">
-        <div>
-            <button>AC</button>
-            <button>&lt;</button>
-            <button>%</button>
-            <button>+</button>
-        </div>
-        <div>
-            <button>1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>-</button>
-        </div>
-        <div>
-            <button>4</button>
-            <button>5</button>
-            <button>6</button>
-            <button>&times;</button>
-        </div>
-        <div>
-            <button>7</button>
-            <button>8</button>
-            <button>9</button>
-            <button>&divide;</button>
-        </div>
-        <div>
-            <button>&diamondsuit;</button>
-            <button>0</button>
-            <button>.</button>
-            <button>=</button>
-        </div>
-    </div>
-    <div class="specialButtons">
-        <div class="blueLine"></div>
-        <div class="rowB">  
-            <button>&radic;</button>
-            <button>X<sup>y</sup></button>
-            <button>$-R$</button>
-            <button>€</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    const visor = document.querySelector('.visor');
-    const buttons = document.querySelectorAll('.containerNum button')
-
-    buttons.forEach(button =>{
-        button.addEventListener('click', ()=>{
-            visor.classList.remove('visorErro');
-            const textButton = button.innerText;
-
-            if(textButton==='AC'){
-                visor.innerText = '0'
-                return;
-            }
-            if(textButton==='<'){
-                if(visor.innerText.length > 1){
-                   visor.innerText = visor.innerText.slice(0, -1);
-                }
-                else{
-                    visor.innerText = '0'
-                }
-                return;
-            }
-             if(textButton==='♦'){
-                const ocult = document.querySelector('.specialButtons');
-                ocult.classList.toggle('visivel');
-                return;
-            }
-
-            if(textButton==='='){
-                try{
-                    let expression = visor.innerText;
-                    expression = expression.replace(/&times;/g, '*').replace(/×/g, '*');
-                    expression = expression.replace(/&divide;/g, '/').replace(/÷/g, '/');
-                    visor.innerText = eval(expression);
-                } catch(error){
-                    visor.innerText = 'Erro';
-                    visor.classList.add('visorErro')
-                    return
-                }
-                return;
-            }
-            if(textButton==='.'){
-                const numBlock = visor.innerText.split(/[\+\-×÷]/)
-                const actualNum = numBlock[numBlock.length - 1];
-                if(!actualNum.includes('.')){
-                    visor.innerText+= textButton;
-                }
-                return;
-            }
-            else if(visor.innerText==='0' || visor.innerText==='Erro'){
-                visor.innerText = textButton;
-            }
-            else{
-                visor.innerText += textButton;
-            }
-           
-        });
-    });
-    const specialBtns = document.querySelectorAll('.specialButtons button');
-        specialBtns.forEach(button => {
-        button.addEventListener('click', ()=>{
-           const textButton=button.innerText;
-        })
-        })
-
-</script>
-    
-</body>
-</html>
+    .containerNum button.touchBtn, 
+.specialButtons button.touchBtn {
+    color: #00f0ff !important;
+    background-color: rgb(255, 255, 255) !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 5px #00f0ff, 0 0 15px #00f0ff, inset 0 0 5px #00f0ff !important;
+    animation: none !important; 
+}
